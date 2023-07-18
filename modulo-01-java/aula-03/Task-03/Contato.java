@@ -11,6 +11,13 @@ public class Contato {
     public void imprimirContato(){
         System.out.printf("Descrição: %s\n", this.descricao);
         System.out.printf("Telefone: %s\n", this.telefone);
-        System.out.printf("Tipo: %d\n", this.tipo);
+        switch (this.tipo) {
+            case 1:
+                System.out.println("Tipo: Residencial");
+                break;
+            case 2:
+                System.out.println("Tipo: Comercial");
+                break;
+        }
     }
 }

@@ -18,16 +18,12 @@ public class ContaCorrente {
     }
 
     public boolean sacar(double valor){
-        if (this.retornarSaldoComChequeEspecial() < valor){
+        if (this.saldo < valor){
             return false;
         }
 
         else if (valor < 0) {
             return false;
-        }
-
-        else if (this.saldo < valor) {
-            this.chequeEspecial -= valor;
         }
 
         else {
@@ -53,17 +49,12 @@ public class ContaCorrente {
     }
 
     public boolean tranferir(ContaCorrente contaDestino, double valor){
-        if (this.retornarSaldoComChequeEspecial() < valor){
+        if (this.saldo < valor){
             return false;
         }
 
         else if (valor < 0) {
             return false;
-        }
-
-        else if (this.saldo < valor) {
-            this.chequeEspecial -= valor;
-            contaDestino.saldo += valor;
         }
 
         else {

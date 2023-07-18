@@ -10,22 +10,18 @@ public class Exercicio06 {
         int numeroUsuario = scanner.nextInt();
 
         int contadorIgual = 0;
+        int contadorMenor = 0;
+        int contadorMaior = 0;
         for (int numero : numeros) {
             if (numero == numeroUsuario) {
                 contadorIgual += 1;
             }
-        }
 
-        int contadorMenor = 0;
-        for (int numero : numeros) {
-            if (numero < numeroUsuario) {
+            else if (numero < numeroUsuario) {
                 contadorMenor += 1;
             }
-        }
 
-        int contadorMaior = 0;
-        for (int numero : numeros) {
-            if (numero > numeroUsuario) {
+            else if (numero > numeroUsuario) {
                 contadorMaior += 1;
             }
         }

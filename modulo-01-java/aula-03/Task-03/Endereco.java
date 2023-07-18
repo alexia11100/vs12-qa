@@ -20,7 +20,14 @@ public class Endereco {
     }
 
     public void imprimirEndereco(){
-        System.out.printf("Tipo: %d\n", this.tipo);
+        switch(this.tipo) {
+            case 1:
+                System.out.println("Tipo: Residencial");
+                break;
+            case 2:
+                System.out.println("Tipo: Comercial");
+                break;
+        }
         System.out.printf("Logradouro: %s\n", this.logradouro);
         System.out.printf("Número: %d\n", this.numero);
         System.out.printf("Complemento: %s\n", this.complemento);

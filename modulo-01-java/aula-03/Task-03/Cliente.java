@@ -12,13 +12,17 @@ public class Cliente {
     }
 
     public void imprimirContatos(){
-        this.contatos[0].imprimirContato();
-        this.contatos[1].imprimirContato();
+        if (this.contatos != null) {
+            this.contatos[0].imprimirContato();
+            this.contatos[1].imprimirContato();
+        }
     }
 
     public void imprimirEnderecos(){
-        this.enderecos[0].imprimirEndereco();
-        this.enderecos[1].imprimirEndereco();
+        if (this.enderecos != null) {
+            this.enderecos[0].imprimirEndereco();
+            this.enderecos[1].imprimirEndereco();
+        }
     }
 
     public void imprimirCliente(){

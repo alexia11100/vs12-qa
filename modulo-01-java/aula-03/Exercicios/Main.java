@@ -1,7 +1,14 @@
 public class Main {
     public static void main(String[] args) {
-        Pessoa pessoa1 = new Pessoa("João", "Silva", 25, "+123456789");
-        Pessoa pessoa2 = new Pessoa("Maria", "Santos", 30, "+987654321");
+        Pessoa pessoa1 = new Pessoa();
+        pessoa1.setNome("João");
+        pessoa1.setSobrenome("Silva");
+        pessoa1.setIdade(25);
+        pessoa1.setWhatsapp("+123456789");
+
+        Pessoa pessoa2 = new Pessoa("Maria", "Santos");
+        pessoa2.setIdade(30);
+        pessoa2.setWhatsapp("+987654321");
 
         pessoa1.conversar(pessoa2);
         System.out.println("Nome completo: " + pessoa1.retornarNomeCompleto());

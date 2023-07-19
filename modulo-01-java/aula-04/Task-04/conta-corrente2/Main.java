@@ -15,7 +15,7 @@ public class Main {
         contaFulano.setNumeroConta("1234");
         contaFulano.setCliente(fulano);
         contaFulano.setChequeEspecial(200.00);
-        contaFulano.setSaldo(500.0);
+        contaFulano.setSaldo(400.0);
 
         Contato contatoCicrano1 = new Contato("Telefone pessoal", "333333333", 1);
         Contato contatoCicrano2 = new Contato("Telefone comercial", "444444444", 2);
@@ -36,9 +36,11 @@ public class Main {
         System.out.println(contaFulano.retornarSaldoComChequeEspecial());
         contaFulano.depositar(500);
         System.out.println(contaFulano.retornarSaldoComChequeEspecial());
-        contaFulano.sacar(300);
-        System.out.println(contaFulano.retornarSaldoComChequeEspecial());
         contaFulano.transferir(contaCicrano, 400);
+        System.out.println(contaFulano.retornarSaldoComChequeEspecial());
+        contaFulano.sacar(600);
+        System.out.println(contaFulano.retornarSaldoComChequeEspecial());
+        contaFulano.sacar(100);
         System.out.println(contaFulano.retornarSaldoComChequeEspecial());
 
         System.out.println("Testando conta de cicrano");

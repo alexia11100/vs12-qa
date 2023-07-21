@@ -22,12 +22,6 @@ public class ContaCorrente extends Conta implements Impressao {
             return false;
         }
 
-        else if (super.getSaldo() < valor){
-            valor -= super.getSaldo();
-            super.setSaldo(0.0);
-            this.chequeEspecial -= valor;
-        }
-
         else {
             super.setSaldo(super.getSaldo() - valor);
         }

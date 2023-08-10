@@ -1,0 +1,378 @@
+{
+	"info": {
+		"_postman_id": "43297722-6867-4727-a9fb-46583edd3b52",
+		"name": "ServeRest-Task02",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29004906"
+	},
+	"item": [
+		{
+			"name": "Cadastrar Produto",
+			"item": [
+				{
+					"name": "CT004 Cadastrar Produto Novo (Cenário Positivo)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// salvando resposta do servidor\r",
+									"const produto = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.environment.set(\"idProduto\", produto._id)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"{{nomeProduto}}\",\r\n    \"preco\": {{precoProduto}},\r\n    \"descricao\": \"{{descricaoProduto}}\",\r\n    \"quantidade\": {{quantidadeProduto}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/produtos",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CT005 Cadastrar Produto Sem Autorização (Cenário Negativo)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const produto = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \" MX Vertical\",\r\n    \"preco\": 470,\r\n    \"descricao\": \"Mouse\",\r\n    \"quantidade\": 381\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/produtos",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CT006 Cadastrar Produto Já Existente (Cenário Negativo)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const produto = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \" MX Vertical\",\r\n    \"preco\": 470,\r\n    \"descricao\": \"Mouse\",\r\n    \"quantidade\": 381\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/produtos",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"// gera produto da minha lista aleatório",
+							"pm.environment.set(\"nomeProduto\", pm.variables.replaceIn('{{$randomProduct}}'))",
+							"",
+							"// gera preço aleatorio postman",
+							"let preco = parseInt(pm.variables.replaceIn('{{$randomInt}}'))",
+							"pm.environment.set(\"precoProduto\", preco)",
+							"",
+							"// gera descrição aleatória postman",
+							"pm.environment.set(\"descricaoProduto\", pm.variables.replaceIn('{{$randomPhrase}}'))",
+							"",
+							"// gera quantidade aleatoria postman",
+							"let quantidade = parseInt(pm.variables.replaceIn('{{$randomInt}}'))",
+							"pm.environment.set(\"quantidadeProduto\", quantidade)"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Buscar Produto Por ID",
+			"item": [
+				{
+					"name": "CT007 Buscar Produto Com  ID Válido (Cenário Positivo)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const produto = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// verifico se os valores das variáveis de ambinete correspondem aos atributos de \"produto\"\r",
+									"pm.test(\"Validar cadastrar produto com sucesso\", function () {\r",
+									"    pm.expect(pm.environment.get(\"nomeProduto\")).to.eq(produto.nome);\r",
+									"    pm.expect(pm.environment.get(\"precoProduto\")).to.eq(produto.preco);\r",
+									"    pm.expect(pm.environment.get(\"descricaoProduto\")).to.eq(produto.descricao);\r",
+									"    pm.expect(pm.environment.get(\"quantidadeProduto\")).to.eq(produto.quantidade);\r",
+									"    pm.expect(pm.environment.get(\"idProduto\")).to.eq(produto._id);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Excluir massa de teste com sucesso\", function () {\r",
+									"    pm.sendRequest({\r",
+									"        url: pm.environment.get(\"baseurl\") + \"/produtos/\" + produto._id,\r",
+									"        method: \"DELETE\",\r",
+									"        header: {\r",
+									"            \"Authorization\": \"Bearer \" + pm.environment.get(\"token\")\r",
+									"        }\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/produtos/{{idProduto}}",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"produtos",
+								"{{idProduto}}"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CT008 Buscar Produto Com ID Inválido(Cenário Negativo)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const produto = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/produtos/teste5",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"produtos",
+								"teste5"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CT009 Buscar Produto Com ID Inválido (Cenário Negativo)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const produto = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/produtos/-1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"produtos",
+								"-1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const login = {",
+					"    url: pm.environment.get(\"baseurl\") + \"/login\",",
+					"    method: 'POST',",
+					"    header: {",
+					"        \"Content-Type\" : \"application/json\"",
+					"    },",
+					"    body: {",
+					"        mode: 'raw',",
+					"        raw: JSON.stringify({",
+					"            \"email\" : pm.environment.get(\"email\"),",
+					"            \"password\" : pm.environment.get(\"senha\")",
+					"        })",
+					"    }",
+					"};",
+					"pm.sendRequest(login, function(err, res) {",
+					"    pm.expect(err).is.null;",
+					"    const response = res.json();",
+					"    const authorization = response.authorization.split(\" \")[1];",
+					"    pm.environment.set(\"token\", authorization);",
+					"});",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -206,9 +206,7 @@
 									"    pm.expect(produto.message).to.be.a('string');\r",
 									"    pm.expect(produto._id).to.be.a('string');\r",
 									"    pm.expect(produto.message).to.eql(\"Cadastro realizado com sucesso\");\r",
-									"});\r",
-									"\r",
-									"pm.environment.set(\"idProduto\", produto._id);"
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -217,19 +215,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// gera produto da minha lista aleatório\r",
-									"pm.environment.set(\"nomeProduto\", pm.variables.replaceIn('{{$randomProduct}}'))\r",
-									"\r",
-									"// gera preço aleatorio postman\r",
-									"let preco = parseInt(pm.variables.replaceIn('{{$randomInt}}'))\r",
-									"pm.environment.set(\"precoProduto\", preco)\r",
-									"\r",
-									"// gera descrição aleatória postman\r",
-									"pm.environment.set(\"descricaoProduto\", pm.variables.replaceIn('{{$randomPhrase}}'))\r",
-									"\r",
-									"// gera quantidade aleatoria postman\r",
-									"let quantidade = parseInt(pm.variables.replaceIn('{{$randomInt}}'))\r",
-									"pm.environment.set(\"quantidadeProduto\", quantidade)"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -240,7 +226,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"{{nomeProduto}}\",\r\n    \"preco\": {{precoProduto}},\r\n    \"descricao\": \"{{descricaoProduto}}\",\r\n    \"quantidade\": {{quantidadeProduto}}\r\n}",
+							"raw": "{\r\n    \"nome\": \"{{produtoNaoExistente}}\",\r\n    \"preco\": {{$randomInt}},\r\n    \"descricao\": \"{{$randomPhrase}}\",\r\n    \"quantidade\": {{$randomInt}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -305,7 +291,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"teste\",\r\n    \"preco\": 1,\r\n    \"descricao\": \"teste\",\r\n    \"quantidade\": 1\r\n}",
+							"raw": "{\r\n    \"nome\": \"{{produtoNaoExistente}}\",\r\n    \"preco\": {{$randomInt}},\r\n    \"descricao\": \"{{$randomPhrase}}\",\r\n    \"quantidade\": {{$randomInt}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -366,7 +352,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"Logitech MX Vertical\",\r\n    \"preco\": 470,\r\n    \"descricao\": \"Mouse\",\r\n    \"quantidade\": 382\r\n}",
+							"raw": "{\r\n    \"nome\": \"{{produtoExistente}}\",\r\n    \"preco\": {{$randomInt}},\r\n    \"descricao\": \"{{$randomPhrase}}\",\r\n    \"quantidade\": {{$randomInt}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -433,28 +419,8 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Validar se o produto possui os atributos esperados\", function () {\r",
-									"    pm.expect(pm.environment.get(\"nomeProduto\")).to.eq(produto.nome);\r",
-									"    pm.expect(pm.environment.get(\"precoProduto\")).to.eq(produto.preco);\r",
-									"    pm.expect(pm.environment.get(\"descricaoProduto\")).to.eq(produto.descricao);\r",
-									"    pm.expect(pm.environment.get(\"quantidadeProduto\")).to.eq(produto.quantidade);\r",
-									"    pm.expect(pm.environment.get(\"idProduto\")).to.eq(produto._id);\r",
-									"});\r",
-									"\r",
-									"const requisicaoExcluirMassaDeTestes = {\r",
-									"    url: pm.environment.get(\"baseurl\") + \"/produtos/\" + produto._id,\r",
-									"    method: \"DELETE\",\r",
-									"    header: {\r",
-									"        \"Authorization\": \"Bearer \" + pm.environment.get(\"token\")\r",
-									"    }\r",
-									"}\r",
-									"\r",
-									"pm.sendRequest(requisicaoExcluirMassaDeTestes, function(err, res) {\r",
-									"    const response = res.json();\r",
-									"    pm.test(\"Excluir massa de testes com sucesso\", function() {\r",
-									"        pm.response.to.have.status(200);\r",
-									"        pm.expect(response.message).to.eq(\"Registro excluído com sucesso\");\r",
-									"    });\r",
+									"pm.test(\"Validar se o produto possui o id esperado\", function () {\r",
+									"    pm.expect(produto._id).to.eq(pm.environment.get(\"idExistente\"))\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -465,13 +431,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/produtos/{{idProduto}}",
+							"raw": "{{baseurl}}/produtos/{{idExistente}}",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"produtos",
-								"{{idProduto}}"
+								"{{idExistente}}"
 							],
 							"query": [
 								{
@@ -515,13 +481,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/produtos/teste5",
+							"raw": "{{baseurl}}/produtos/{{$randomAlphaNumeric}}",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"produtos",
-								"teste5"
+								"{{$randomAlphaNumeric}}"
 							],
 							"query": [
 								{
@@ -565,13 +531,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/produtos/-1",
+							"raw": "{{baseurl}}/produtos/{{$randomProduct}}",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"produtos",
-								"-1"
+								"{{$randomProduct}}"
 							],
 							"query": [
 								{
@@ -616,13 +582,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/produtos/{{idProduto}}",
+							"raw": "{{baseurl}}/produtos/{{idExistente}}",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"produtos",
-								"{{idProduto}}"
+								"{{idExistente}}"
 							]
 						}
 					},
@@ -664,13 +630,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/produtos/{{idProduto}}",
+							"raw": "{{baseurl}}/produtos/{{idExistente}}",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"produtos",
-								"{{idProduto}}"
+								"{{idExistente}}"
 							]
 						}
 					},
@@ -702,13 +668,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseurl}}/produtos/teste",
+							"raw": "{{baseurl}}/produtos/{{$randomAlphaNumeric}}",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"produtos",
-								"teste"
+								"{{$randomAlphaNumeric}}"
 							]
 						}
 					},
@@ -764,12 +730,7 @@
 									"\r",
 									"pm.test(\"Verifica mensagem de registro alterado com sucesso\", function () {\r",
 									"    pm.expect(\"Registro alterado com sucesso\").to.eql(response.message);\r",
-									"});\r",
-									"\r",
-									"pm.environment.set(\"nomeProduto\", pm.environment.get(\"nomeProduto2\"));\r",
-									"pm.environment.set(\"precoProduto\", pm.environment.get(\"precoProduto2\"));\r",
-									"pm.environment.set(\"descricaoProduto\", pm.environment.get(\"descricaoProduto2\"));\r",
-									"pm.environment.set(\"quantidadeProduto\", pm.environment.get(\"quantidadeProduto2\"));"
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -778,19 +739,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"// gera produto da minha lista aleatório\r",
-									"pm.environment.set(\"nomeProduto2\", pm.variables.replaceIn('{{$randomProduct}}'))\r",
-									"\r",
-									"// gera preço aleatorio postman\r",
-									"let preco = parseInt(pm.variables.replaceIn('{{$randomInt}}'))\r",
-									"pm.environment.set(\"precoProduto2\", preco)\r",
-									"\r",
-									"// gera descrição aleatória postman\r",
-									"pm.environment.set(\"descricaoProduto2\", pm.variables.replaceIn('{{$randomPhrase}}'))\r",
-									"\r",
-									"// gera quantidade aleatoria postman\r",
-									"let quantidade = parseInt(pm.variables.replaceIn('{{$randomInt}}'))\r",
-									"pm.environment.set(\"quantidadeProduto2\", quantidade)"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -801,7 +750,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nome\": \"{{nomeProduto2}}\",\r\n  \"preco\": {{precoProduto2}},\r\n  \"descricao\": \"{{descricaoProduto2}}\",\r\n  \"quantidade\": {{quantidadeProduto2}}\r\n}",
+							"raw": "{\r\n  \"nome\": \"{{produtoNaoExistente}}\",\r\n  \"preco\": {{$randomInt}},\r\n  \"descricao\": \"{{$randomPhrase}}\",\r\n  \"quantidade\": {{$randomInt}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -809,13 +758,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseurl}}/produtos/{{idProduto}}",
+							"raw": "{{baseurl}}/produtos/{{idExistente}}",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"produtos",
-								"{{idProduto}}"
+								"{{idExistente}}"
 							]
 						}
 					},
@@ -858,7 +807,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nome\": \"Teste\",\r\n  \"preco\": 470,\r\n  \"descricao\": \"Mouse\",\r\n  \"quantidade\": 381\r\n}",
+							"raw": "{\r\n  \"nome\": \"{{produtoNaoExistente}}\",\r\n  \"preco\": {{$randomInt}},\r\n  \"descricao\": \"{{$randomPhrase}}\",\r\n  \"quantidade\": {{$randomInt}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -866,13 +815,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseurl}}/produtos/{{idProduto}}",
+							"raw": "{{baseurl}}/produtos/{{idExistente}}",
 							"host": [
 								"{{baseurl}}"
 							],
 							"path": [
 								"produtos",
-								"{{idProduto}}"
+								"{{idExistente}}"
 							]
 						}
 					},
@@ -904,7 +853,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nome\": \"Logitech MX Vertical\",\r\n  \"preco\": {{precoProduto}},\r\n  \"descricao\": \"{{descricaoProduto}}\",\r\n  \"quantidade\": {{quantidadeProduto}}\r\n}",
+							"raw": "{\r\n  \"nome\": \"{{produtoExistente}}\",\r\n  \"preco\": {{$randomInt}},\r\n  \"descricao\": \"{{$randomPhrase}}\",\r\n  \"quantidade\": {{$randomInt}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -963,6 +912,40 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
+					"const getProdutos = {",
+					"    url: pm.environment.get(\"baseurl\") + \"/produtos\",",
+					"    method: 'GET',",
+					"};",
+					"pm.sendRequest(getProdutos, function(err, res) {",
+					"    pm.expect(err).is.null;",
+					"    var nomesProdutos = [];",
+					"    var idsProdutos = [];",
+					"    const response = res.json();",
+					"    const tamanhoProdutos = response.produtos.length;",
+					"",
+					"    if (tamanhoProdutos > 0) {",
+					"        for (let i = 0; i < tamanhoProdutos; i++) {",
+					"            const nomeProduto = response.produtos[i].nome;",
+					"            const idProduto = response.produtos[i]._id;",
+					"            nomesProdutos.push(nomeProduto);",
+					"            idsProdutos.push(idProduto);",
+					"        }",
+					"    }",
+					"    const produtoExistente = nomesProdutos[Math.floor(Math.random() * nomesProdutos.length)];",
+					"    pm.environment.set(\"produtoExistente\", produtoExistente);",
+					"",
+					"    let produtoNaoExistente = \"Novo Produto\";",
+					"    let tentativas = 0;",
+					"    while (nomesProdutos.includes(produtoNaoExistente)) {",
+					"        tentativas++;",
+					"        produtoNaoExistente = \"Novo Produto \" + tentativas;",
+					"    }",
+					"    pm.environment.set(\"produtoNaoExistente\", produtoNaoExistente);",
+					"",
+					"    const idExistente = idsProdutos[Math.floor(Math.random() * idsProdutos.length)];",
+					"    pm.environment.set(\"idExistente\", idExistente);",
+					"});",
+					"",
 					"const login = {",
 					"    url: pm.environment.get(\"baseurl\") + \"/login\",",
 					"    method: 'POST',",

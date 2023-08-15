@@ -19,7 +19,7 @@ public class ProdutoTest {
                     .body("{\"email\": \"fulano@qa.com\", \"password\": \"teste\"}")
                 .when()
                     .post("/login")
-                    .then()
+                .then()
                     .extract().jsonPath().getString("authorization");
     }
 

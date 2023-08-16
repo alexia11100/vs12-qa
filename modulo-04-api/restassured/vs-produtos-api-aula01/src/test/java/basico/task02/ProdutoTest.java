@@ -22,7 +22,7 @@ public class ProdutoTest {
         Properties properties = new Properties();
 
         // defina o caminho do seu arquivo de configuração aqui (config.properties)
-        InputStream input = new FileInputStream("caminho/para/config.properties");
+        InputStream input = new FileInputStream("C:\\Users\\alexia.oliveira\\vs12-qa\\modulo-04-api\\restassured\\vs-produtos-api-aula01\\src\\test\\java\\basico\\task02\\config.properties");
         properties.load(input);
 
         String username = properties.getProperty("email");

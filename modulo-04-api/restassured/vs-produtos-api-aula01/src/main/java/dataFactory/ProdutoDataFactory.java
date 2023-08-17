@@ -42,12 +42,36 @@ public class ProdutoDataFactory {
         return produtoAtualizado;
     }
 
+    public static Produto produtoComQuantidadeNegativa() {
+        Produto produtoAtualizado = produtoCadastradoAPI();
+
+        produtoAtualizado.setQuantidade(faker.number().negative());
+
+        return produtoAtualizado;
+    }
+
+    public static Produto produtoComMesmoNome(String nomeExistente) {
+        Produto produtoAtualizado = produtoCadastradoAPI();
+
+        produtoAtualizado.setNome(nomeExistente);
+        produtoAtualizado.setDescricao(faker.lorem().sentence());
+
+        return produtoAtualizado;
+    }
+
 
     public static Produto produtoComPrecoInvalido(){
         Produto produtoPrecoInvalido = novoProduto();
         produtoPrecoInvalido.setPreco(faker.random().nextInt(-1000, -1));
 
         return produtoPrecoInvalido;
+    }
+
+    public static Produto produtoComNomeInvalido(){
+        Produto produtoNomeInvalido = novoProduto();
+        produtoNomeInvalido.setNome("");
+
+        return produtoNomeInvalido;
     }
 
     private static Produto novoProduto() {

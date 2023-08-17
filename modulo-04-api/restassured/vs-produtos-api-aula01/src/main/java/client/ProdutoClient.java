@@ -25,6 +25,24 @@ public class ProdutoClient extends BaseClient {
                 ;
     }
 
+    public Response listarProdutosPorPreco(Integer preco) {
+        return
+                given()
+                        .param("preco", preco)
+                .when()
+                        .get(PRODUTO)
+                ;
+    }
+
+    public Response listarProdutosPorQuantidade(Integer quantidade) {
+        return
+                given()
+                        .param("quantidade", quantidade)
+                .when()
+                        .get(PRODUTO)
+                ;
+    }
+
     public Response verProduto(String _id) {
         return
                 given()
